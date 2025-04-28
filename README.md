@@ -10,4 +10,5 @@ To any doubtful employers on my grammar, please note that I completed at least h
 
 
 ## Installation
-If I ever forget to place a requirements.txt, you need Selenium, Firefox and a geckodriver exe to run this
+You need Python, Pip, Selenium Firefox and a geckodriver exe to run this, though everything should be ready since it's an environment.
+Change the path in theTrench.py to your Geckodriver.exe location.
