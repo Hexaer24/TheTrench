@@ -1,6 +1,6 @@
 # The Trench
 
-Duolinguo asked: "French or the trench", and we all know where this has led you.
+The green birld asked: "French or the trench", and we all know where this has led you.
 
 Welcome to The Trench, a bot for completing Projet Voltaire!
 
@@ -10,5 +10,5 @@ To any doubtful employers on my grammar, please note that I completed at least h
 
 
 ## Installation
-You need Python, Pip, Selenium Firefox and a geckodriver exe to run this, though everything should be ready since it's an environment.
-Change the path in theTrench.py to your Geckodriver.exe location.
+You need Python and pip.
+```pip install -r```
