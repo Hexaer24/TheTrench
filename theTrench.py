@@ -30,6 +30,7 @@ class TheTrench(BaseCase):
         self.click('#cmpbntnotxt')
         self.click('button:contains("compris")')
         self.click('span:contains("Orthographe")')
+        #self.click('.validation-activity-cell-rectangle')
 
         self.wait_for_element_present(".sentence", timeout=60)
         sentence = self.find_element(".sentence")
@@ -54,7 +55,6 @@ class TheTrench(BaseCase):
                 if count == 2:
                     break
 
-        # supprime le //OK et tout les nombres après
         print(extract_string(raw))
 
 
