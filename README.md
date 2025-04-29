@@ -11,4 +11,4 @@ To any doubtful employers on my grammar, please note that I completed at least h
 
 ## Installation
 You need Python and pip.
-```pip install -r```
+Install requirements with (while in project folder): ```pip install -r```
