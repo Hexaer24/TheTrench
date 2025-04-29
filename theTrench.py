@@ -1,26 +1,47 @@
 import gzip
-
+import re
 from seleniumbase import BaseCase
+
+
+def extract_string(raw):
+    start = raw.rfind('["')
+    end = raw.rfind(']') + 1
+    if start == -1 or end == -1:
+        return []
+    array_str = raw[start:end]
+    return re.findall(r'"(.*?)"', array_str, flags=re.DOTALL)
+
+def clean_words(words):
+    clean = ''
+    for char in words:
+        if(char==''):
+            char=' '
+        clean+=char
+    return clean
 
 BaseCase.main(__name__, __file__)
 
-
 class TheTrench(BaseCase):
-
     def test_the_trench(self):
         self.open("https://compte.groupe-voltaire.fr/login")
-        while self.get_current_url()!="https://www.projet-voltaire.fr/choix-parcours/":
+        target = "https://www.projet-voltaire.fr/choix-parcours/"
+        while self.get_current_url() != target:
             self.sleep(0.5)
         self.click('#cmpbntnotxt')
         self.click('button:contains("compris")')
         self.click('span:contains("Orthographe")')
-        self.click('.validation-activity-cell-rectangle')
+
+        self.wait_for_element_present(".sentence", timeout=60)
+        sentence = self.find_element(".sentence")
+        sentence_words = sentence.find_elements("xpath", ".//*")
+        words = [word.text for word in sentence_words]
+        print(f"Phrase trouvée : {clean_words(words)}")
+
         count = 0
-        affiche = True
+        raw = ''
         for req in self.driver.requests:
-            if req.response and "WolLearningContentWebService" in req.url :
+            if req.response and "WolLearningContentWebService" in req.url:
                 raw_bytes = req.response.body
-                # 4) Décompression gzip si nécessaire
                 try:
                     if raw_bytes.startswith(b'\x1f\x8b'):
                         raw = gzip.decompress(raw_bytes).decode("utf-8", errors="ignore")
@@ -29,8 +50,13 @@ class TheTrench(BaseCase):
                 except Exception as e:
                     print("Erreur lors de la décompression :", e)
                     raw = raw_bytes.decode("utf-8", errors="ignore")
-                count = count + 1
-            if count == 2 and affiche:
-                affiche = False
-                print(raw)
+                count += 1
+                if count == 2:
+                    break
+
+        # supprime le //OK et tout les nombres après
+        print(extract_string(raw))
+
+
+
         self.sleep(9999)
