@@ -38,6 +38,7 @@ try:
     time.sleep(5)
     wait_click("/html/body/div[4]/div/div/div[3]/button")
     wait_click("/html/body/div[7]/div/div/div[1]/a/span")
+    wait_click("//*[@id='validationCellDiv_1']/div/div[1]/div[3]")
 
     # 2) Récupérer la phrase
     WebDriverWait(driver, 20).until(
@@ -57,7 +58,7 @@ try:
     count = 0
     affiche = True
     for req in driver.requests:
-        if req.response and "WolLearningContentWebService" in req.url:
+        if req.response and "WolLearningContentWebService" in req.url :
             raw_bytes = req.response.body  
             # 4) Décompression gzip si nécessaire
             try:
