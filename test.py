@@ -9,23 +9,32 @@ phrase = ['J',"'",'avais','l',"'",'impression','que','ce','que','nous','vivions'
 
 
 def extrait_phrase(raw,phrase):
+    # start correspond à l'indice de début de la zone de recherche dans le JSON
     start = 0
+    # end correspond à l'indice de fin de la zone de recherche dans le JSON
     end = len(raw)
+    # on début un maximum d'itérations afin d'etre sur de ne pas avoir une boucle infinie en cas d'erreurs
     max_iterations = 50
     iterations = 0
 
+    # retourne le mot le plus long de la phrase (On prends ce mot car c'est celui qui a le plus de chance d'etre unique a la phrase et donc de ne pas etre présent dans d'autre phrase)
     mot = mot_le_plus_long(phrase)
+    # retourne la taille de la phrase
     taille = taille_totale(phrase)
 
     while iterations < max_iterations:
         try:
+            # on sélectionne l'indice du mot le plus long dans la réponse JSON
             index_mot = raw.index(mot, start, end)
         except ValueError:
             print("Mot non trouvé dans le texte.")
             return None
 
+        # on sélectionne ensuite à partir de cette indice les caractères présédents (taille de la phrase *2 afin d'etre sur de sélectionner la phrase entière) 
+        # on sélectionne également les caractères suivant (taille de la phrase*4 car on sélectionne le token(13AFF39BB245131BF1A55F6ED997202582F72BD2014 par exemple) + la phrase corigé  )
         trouve = raw[max(0, index_mot - 2 * taille): index_mot + 4 * taille]
 
+        # cette boucle vérifie si tout les mots de la phrase sont présent dans ce qu'on vient de sélectionner si c'est le cas c'est la bonne réponse JSON
         bonne_phrase = True
         for mots in phrase:
             if mots and mots not in "'":
@@ -34,34 +43,43 @@ def extrait_phrase(raw,phrase):
                     break
 
         if bonne_phrase:
+
+            # on sélectionne le premier mot de la phrase
             premier = phrase[0]
+            # on sélectionne le deuxième mot de la phrase
             dernier = phrase[-1]
 
-            
+            # pattern correspond a ce qu'on cherche ici le premier mot de la phrase précédé d'une apostrophe
             debut_token = f"'{premier}"  
+            # et il faut que ce mot ne soit pas suivi par une autre l'etre de l'alpahbet sinon ('Je') pourrais etre sélectionné alors qu'on cherche ('J')
             pattern = re.compile(rf"'{premier}(?![a-zA-Z])")  
 
+            # On cherche donc ce patterne dans ce qu'on sélectionne de la réponse JSON
             debut_match = pattern.search(trouve)
             if not debut_match:
                 print("Début non trouvé.")
                 return None
 
+            # indice dans la réponse JSON de premier mot de la phrase
             debut_index = debut_match.start()
 
-            
+            # fin_token correspond a ce qu'on cherche ici le dernier mot de la phrase suivi d'une apostrophe
             fin_token = f"{dernier}'"
             fin_index = trouve.rfind(fin_token)
+            # si l'indice est différent de -1 c'est qu'on l'a trouvé
             if fin_index == -1:
                 print("Fin non trouvée.")
                 return None
 
-            
+            # fin_index correspond a l'indice du début du dernier mot, on ajoutte donc la taille du dernier mot pour l'avoir en entier
             fin_index += len(fin_token)
 
-            
+            # on extrait ensuite la phrase de réponse JSON a partir du premier et dernier mot de la phrase            
             extrait = trouve[debut_index:fin_index]
             return extrait
         else:
+            # si ce n'était pas la bonne phrase on recommence mais cette fois en cherchant après l'indice du mot le plus long qu'on vient de regarder
+            # on va donc chercher la deuxième occurence du mot le plus long
             start = index_mot + 1
             iterations += 1
 
@@ -69,16 +87,18 @@ def extrait_phrase(raw,phrase):
     return None
 
 
-
+# retourne le mot le plus long de la phrase
 def mot_le_plus_long(mots):
     mots_valides = [mot for mot in mots if mot and mot not in string.punctuation]
     if not mots_valides:
         return None
     return max(mots_valides, key=len)
 
+# retourne la taille totale de la phrase
 def taille_totale(phrase):
     return sum(len(mot) for mot in phrase)
 
+# extrait le mot entre \x3CB\x3E
 def extraire_faute(raw_string):
 
     raw_string = raw_string.replace(r'\x3CB\x3E', '<B>').replace(r'\x3C/B\x3E', '</B>')
@@ -90,7 +110,12 @@ def extraire_faute(raw_string):
     if matches:
         return matches  
     else:
-        return None
+        return None  
+
+
+
+
+
 
 
 
@@ -103,5 +128,9 @@ print(bloc_string)
 faute = extraire_faute(bloc_string)
 
 print(f"Faute : {faute}")
+
+
+
+    
 
 
