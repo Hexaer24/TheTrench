@@ -1,6 +1,6 @@
 # The Trench
 
-The green birld asked: "French or the trench", and we all know where this has led you.
+The green bird asked: "French or the trench", and we all know where this has led you.
 
 Welcome to The Trench, a bot for completing Projet Voltaire!
 

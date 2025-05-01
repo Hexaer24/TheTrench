@@ -90,12 +90,7 @@ def extraire_faute(raw_string):
     if matches:
         return matches  
     else:
-        return None  
-
-
-
-
-
+        return None
 
 
 
@@ -108,9 +103,5 @@ print(bloc_string)
 faute = extraire_faute(bloc_string)
 
 print(f"Faute : {faute}")
-
-
-
-    
 
 

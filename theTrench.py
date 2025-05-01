@@ -30,13 +30,10 @@ class TheTrench(BaseCase):
         self.click('#cmpbntnotxt')
         self.click('button:contains("compris")')
         self.click('span:contains("Orthographe")')
-        #self.click('.validation-activity-cell-rectangle')
+        self.click('.validation-activity-cell-rectangle')
 
         self.wait_for_element_present(".sentence", timeout=60)
-        sentence = self.find_element(".sentence")
-        sentence_words = sentence.find_elements("xpath", ".//*")
-        words = [word.text for word in sentence_words]
-        print(f"Phrase trouvée : {clean_words(words)}")
+        #On attend la phrase, ça assure que le JSON à chargé
 
         count = 0
         raw = ''
@@ -54,8 +51,15 @@ class TheTrench(BaseCase):
                 count += 1
                 if count == 2:
                     break
-
         print(extract_string(raw))
+
+        #boucle while ici: on a besoin du JSON qu'une seule fois
+        sentence = self.find_element(".sentence")
+        sentence_words = sentence.find_elements("xpath", ".//*")
+        words = [word.text for word in sentence_words]
+        print(f"Phrase trouvée : {clean_words(words)}")
+
+
 
 
 
