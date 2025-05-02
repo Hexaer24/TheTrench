@@ -1,17 +1,17 @@
 theTrench.py::TheTrench::test_the_trench
 --------------------------------------------------------------------
 Last Page: https://www.projet-voltaire.fr/voltaire/com.woonoz.gwt.woonoz.Voltaire/Voltaire.html?returnUrl=www.projet-voltaire.fr/choix-parcours/&applicationCode=pv
- Duration: 16.20s
+ Duration: 17.28s
   Browser: Firefox 137.0.2
    Driver: geckodriver 0.36.0
-Timestamp: 1746183394  (Unix Timestamp)
+Timestamp: 1746184953  (Unix Timestamp)
      Date: Friday, 2 May 2025
-     Time: 12:56:34 PM  (Romance Summer Time, UTC+02:00)
+     Time: 1:22:33 PM  (Romance Summer Time, UTC+02:00)
 --------------------------------------------------------------------
 Traceback:
-  File "E:\projects\makeTools\TheTrench\theTrench.py", line 174, in test_the_trench
+  File "E:\projects\makeTools\TheTrench\theTrench.py", line 176, in test_the_trench
     faute = extraire_faute(bloc_string)
-  File "E:\projects\makeTools\TheTrench\theTrench.py", line 118, in extraire_faute
+  File "E:\projects\makeTools\TheTrench\theTrench.py", line 119, in extraire_faute
     raw_string = raw_string.replace(r'\x3CB\x3E', '<B>').replace(r'\x3C/B\x3E', '</B>')
                  ^^^^^^^^^^^^^^^^^^
 Exception: 'NoneType' object has no attribute 'replace'

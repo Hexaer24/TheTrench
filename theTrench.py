@@ -40,6 +40,7 @@ def extrait_phrase(raw,phrase):
         try:
             # on sélectionne l'indice du mot le plus long dans la réponse JSON
             index_mot = raw.index(mot, start, end)
+            print(index_mot,mot)
         except ValueError:
             print("Mot non trouvé dans le texte.")
             return None
@@ -158,9 +159,12 @@ class TheTrench(BaseCase):
                 count += 1
                 if count == 2:
                     break
-        #On enlève ce que l'on a pas besoin
+        #On enlève ce que l'on n'a pas besoin
         raw=extract_string(raw)
-        print(raw)
+
+        #Permet de garder le JSON du dernier essai dans un fichier au lieu qu'il prenne la vue du terminal
+        with open("json.txt", "w") as text_file:
+            text_file.write("".join(raw))
 
         #boucle while ici: on a besoin du JSON qu'une seule fois
         sentence = self.find_element(".sentence")
